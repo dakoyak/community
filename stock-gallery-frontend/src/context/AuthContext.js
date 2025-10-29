@@ -2,7 +2,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+const API_URL = process.env.REACT_APP_API_URL;
 
 const AuthContext = createContext();
 

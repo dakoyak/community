@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+const API_URL = process.env.REACT_APP_API_URL;
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState('');

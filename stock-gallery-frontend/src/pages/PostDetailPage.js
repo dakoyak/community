@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+const API_URL = process.env.REACT_APP_API_URL;
 
 const PostDetailPage = () => {
   const { postId } = useParams();
