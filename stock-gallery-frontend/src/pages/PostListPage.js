@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+
 const PostListPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ const PostListPage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/v1/posts');
+        const response = await axios.get(`${API_URL}/api/v1/posts`);
         setPosts(response.data.posts);
         setLoading(false);
       } catch (err) {

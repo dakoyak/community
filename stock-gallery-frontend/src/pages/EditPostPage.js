@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+
 const EditPostPage = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const EditPostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/api/v1/posts/${postId}`);
+        const { data } = await axios.get(`${API_URL}/api/v1/posts/${postId}`);
         // Author check
         if (!user || user.id !== data.post.UserId) {
           alert('수정 권한이 없습니다.');
@@ -38,7 +40,7 @@ const EditPostPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/api/v1/posts/${postId}`, { title, content });
+      await axios.put(`${API_URL}/api/v1/posts/${postId}`, { title, content });
       navigate(`/posts/${postId}`);
     } catch (err) {
       setError(err.response?.data?.message || '글 수정에 실패했습니다.');

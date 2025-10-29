@@ -2,6 +2,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -25,7 +27,7 @@ const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
-    const { data } = await axios.post('http://localhost:3000/api/v1/auth/login', { email, password });
+    const { data } = await axios.post(`${API_URL}/api/v1/auth/login`, { email, password });
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
     setToken(data.token);
@@ -34,7 +36,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, password, username) => {
-    await axios.post('http://localhost:3000/api/v1/auth/register', { email, password, username });
+    await axios.post(`${API_URL}/api/v1/auth/register', { email, password, username });
   };
 
   const logout = () => {

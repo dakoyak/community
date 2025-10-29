@@ -10,22 +10,16 @@ const env = process.env.NODE_ENV || 'development'; // 환경 변수 NODE_ENV가 
 require('dotenv').config();
 
 // config/config.json 파일 대신 환경 변수를 직접 사용하여 Sequelize 인스턴스 생성
-const sequelize = new Sequelize(
-  process.env.DB_NAME,      // 데이터베이스 이름 (.env 에서 읽어옴)
-  process.env.DB_USER,      // 사용자 이름 (.env 에서 읽어옴)
-  process.env.DB_PASSWORD,  // 비밀번호 (.env 에서 읽어옴)
-  {
-    host: process.env.DB_HOST, // 호스트 주소 (.env 에서 읽어옴)
-    dialect: 'postgres',     // 사용할 데이터베이스 종류
-    logging: console.log,   // SQL 쿼리 로그를 콘솔에 출력 (개발 시 유용)
-    // dialectOptions: { // SSL 설정 등이 필요할 경우 추가
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false // 개발 환경에서는 false로 설정하기도 함
-    //   }
-    // }
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  logging: console.log,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // AWS RDS의 경우 이 설정이 필요할 수 있습니다.
+    }
   }
-);
+});
 
 // 데이터베이스 연결 테스트 함수
 const testConnection = async () => {

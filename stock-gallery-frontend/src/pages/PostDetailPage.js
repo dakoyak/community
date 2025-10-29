@@ -4,6 +4,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+
 const PostDetailPage = () => {
   const { postId } = useParams();
   const { user } = useContext(AuthContext);
@@ -22,8 +24,8 @@ const PostDetailPage = () => {
   const fetchPostAndComments = async () => {
     try {
       setLoading(true);
-      const postRes = await axios.get(`http://localhost:3000/api/v1/posts/${postId}`);
-      const commentsRes = await axios.get(`http://localhost:3000/api/v1/posts/${postId}/comments`);
+      const postRes = await axios.get(`${API_URL}/api/v1/posts/${postId}`);
+      const commentsRes = await axios.get(`${API_URL}/api/v1/posts/${postId}/comments`);
       setPost(postRes.data.post);
       setComments(commentsRes.data.comments);
     } catch (err) {
@@ -41,7 +43,7 @@ const PostDetailPage = () => {
     e.preventDefault();
     if (!newComment.trim()) return;
     try {
-      const res = await axios.post(`http://localhost:3000/api/v1/posts/${postId}/comments`, { content: newComment });
+      const res = await axios.post(`${API_URL}/api/v1/posts/${postId}/comments`, { content: newComment });
       setComments([...comments, res.data.comment]);
       setNewComment('');
     } catch (err) {
@@ -52,7 +54,7 @@ const PostDetailPage = () => {
   const handlePostDelete = async () => {
     if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/v1/posts/${postId}`);
+        await axios.delete(`${API_URL}/api/v1/posts/${postId}`);
         navigate('/');
       } catch (err) {
         alert('게시글 삭제에 실패했습니다.');
@@ -62,7 +64,7 @@ const PostDetailPage = () => {
 
   const handleLike = async () => {
     try {
-      await axios.post(`http://localhost:3000/api/v1/posts/${postId}/like`);
+      await axios.post(`${API_URL}/api/v1/posts/${postId}/like`);
       // Optimistically update the UI
       setPost(prevPost => ({ ...prevPost, likeCount: parseInt(prevPost.likeCount) + 1 }));
       alert('게시글을 추천했습니다!');
@@ -74,7 +76,7 @@ const PostDetailPage = () => {
   const handleCommentDelete = async (commentId) => {
     if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/v1/comments/${commentId}`);
+        await axios.delete(`${API_URL}/api/v1/comments/${commentId}`);
         setComments(comments.filter(c => c.id !== commentId));
       } catch (err) {
         alert('댓글 삭제에 실패했습니다.');
@@ -89,7 +91,7 @@ const PostDetailPage = () => {
 
   const handleCommentUpdate = async (commentId) => {
     try {
-      const res = await axios.put(`http://localhost:3000/api/v1/comments/${commentId}`, { content: editingCommentText });
+      const res = await axios.put(`${API_URL}/api/v1/comments/${commentId}`, { content: editingCommentText });
       setComments(comments.map(c => c.id === commentId ? res.data.comment : c));
       setEditingCommentId(null);
       setEditingCommentText('');

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for local development
+
 const CreatePostPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -13,7 +15,7 @@ const CreatePostPage = () => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/posts', { title, content });
+      const response = await axios.post(`${API_URL}/api/v1/posts', { title, content });
       const newPostId = response.data.post.id;
       navigate(`/posts/${newPostId}`);
     } catch (err) {
