@@ -36,7 +36,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, password, username) => {
-    await axios.post(`${API_URL}/api/v1/auth/register', { email, password, username });
+    await axios.post(`${API_URL}/api/v1/auth/register`, { email, password, username });
   };
 
   const logout = () => {

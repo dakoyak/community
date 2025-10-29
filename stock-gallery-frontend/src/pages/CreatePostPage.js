@@ -15,7 +15,7 @@ const CreatePostPage = () => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post(`${API_URL}/api/v1/posts', { title, content });
+      const response = await axios.post(`${API_URL}/api/v1/posts`, { title, content });
       const newPostId = response.data.post.id;
       navigate(`/posts/${newPostId}`);
     } catch (err) {
